@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "plugrl-stepledger"
+dynamic = ["version"]
+description = "Find silent faults at the environment-trainer boundary in RL by comparing step ledgers kept on both sides."
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+authors = [
+    { name = "Chenhao Lu" },
+    { name = "Zuo Gou" },
+    { name = "Zilin Kang" },
+]
+keywords = ["reinforcement learning", "gymnasium", "stable-baselines3", "debugging", "vector environments"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy>=1.21",
+    "gymnasium>=1.0",
+]
+
+[project.optional-dependencies]
+sb3 = ["stable-baselines3>=2.5"]
+test = ["pytest>=7"]
+
+[project.scripts]
+stepledger = "stepledger.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/PlugRL"
+
+[tool.hatch.version]
+path = "src/stepledger/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/stepledger"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
