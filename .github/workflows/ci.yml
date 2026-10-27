@@ -1,0 +1,35 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install CPU torch
+        run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Install stepledger with SB3 and test extras
+        run: python -m pip install -e ".[sb3,test]"
+      - name: Tests (SB3 tests included)
+        run: python -m pytest -v
+      - name: Examples
+        working-directory: ${{ runner.temp }}
+        run: |
+          python "$GITHUB_WORKSPACE/examples/gymnasium_async.py"
+          set +e
+          python "$GITHUB_WORKSPACE/examples/gymnasium_async.py" --fault --dir faulty
+          code=$?
+          set -e
+          test "$code" -eq 1  # the injected fault must be reported
+          python "$GITHUB_WORKSPACE/examples/sb3_pendulum.py" --dir sb3-ledger
+          stepledger compare sb3-ledger sb3-ledger/trainer.npz
