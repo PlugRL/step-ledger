@@ -135,7 +135,11 @@ Each file is an `.npz` without pickles. It holds a JSON `meta` string (format ve
   title={Detecting Silent Faults at the Environment-Trainer Boundary in Reinforcement Learning},
   author={Gou, Zuo and Lu, Chenhao},
   booktitle={CoRL 2026 Workshop on Everything Beneath the Policy},
-  year={2026}
+  year={2026},
+  eprint={2611.08144},
+  archivePrefix={arXiv},
+  primaryClass={cs.RO},
+  url={https://arxiv.org/abs/2611.08144}
 }
 ```
 
